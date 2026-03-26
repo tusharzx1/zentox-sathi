@@ -186,4 +186,5 @@ MIT License - Feel free to use and modify!
 
 ---
 
-Built with ❤️ for the DevCircle Hackathon 2024
+Built with ❤️ TUSHAR KUMAR
+
