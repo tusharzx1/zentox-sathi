@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZENTOX-SATHI | Safety First</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet Configuration -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- External Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <!-- Chart.js for Analysis Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Configuration Loader -->
+    <script src="config.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar-nav">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>ZENTOX</h1>
+                    <p>SATHI | DELHI NCR</p>
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <div class="nav-link active" data-view="home-view">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </div>
+                <div class="nav-link" data-view="news-view">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Real-time News</span>
+                </div>
+                <div class="nav-link" data-view="map-view">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Navigation</span>
+                </div>
+                <div class="nav-link" data-view="history-view">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </div>
+                <div class="nav-link" data-view="analysis-view">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analysis</span>
+                </div>
+                <div class="nav-link" data-view="help-view">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Safety & Help</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer" style="padding: 1rem; border-top: 1px solid var(--gray-200);">
+                <div class="nav-link" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="current-page-title">
+                    <h3 id="view-title">Home</h3>
+                </div>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span id="user-name">Guest User</span>
+                        <div class="indicator-dot online"></div>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="view-container">
+                <!-- 0. HOME VIEW (NEW) -->
+                <section id="home-view" class="view active">
+                    <!-- Hero Section -->
+                    <div class="home-hero">
+                        <div class="hero-content">
+                            <div class="hero-greeting">
+                                <span class="greeting-text" id="greeting-text">Good Evening</span>
+                                <h1 class="hero-title">Welcome to <span class="gradient-text">ZENTOX-SATHI</span></h1>
+                                <p class="hero-subtitle">Your AI-Powered Safety Companion for Delhi NCR</p>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="hero-stat">
+                                    <div class="stat-icon safe"><i class="fas fa-shield-alt"></i></div>
+                                    <div class="stat-info">
+                                        <span class="stat-number" id="home-safe-score">85%</span>
+                                        <span class="stat-label">Safety Score</span>
+                                    </div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="stat-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+                                    <div class="stat-info">
+                                        <span class="stat-number" id="home-alerts-count">3</span>
+                                        <span class="stat-label">Active Alerts</span>
+                                    </div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="stat-icon info"><i class="fas fa-broadcast-tower"></i></div>
+                                    <div class="stat-info">
+                                        <span class="stat-number live-indicator">LIVE</span>
+                                        <span class="stat-label">Monitoring</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="safety-gauge">
+                                <svg viewBox="0 0 200 200" class="gauge-svg">
+                                    <circle cx="100" cy="100" r="80" class="gauge-bg" />
+                                    <circle cx="100" cy="100" r="80" class="gauge-fill" id="safety-gauge-fill" />
+                                    <text x="100" y="95" class="gauge-text" id="gauge-percentage">85%</text>
+                                    <text x="100" y="115" class="gauge-label">SAFE</text>
+                                </svg>
+                                <div class="gauge-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="quick-actions-section">
+                        <h2 class="section-title-home"><i class="fas fa-bolt"></i> Quick Actions</h2>
+                        <div class="quick-actions-grid">
+                            <div class="quick-action-card" data-action="sos">
+                                <div class="action-icon sos"><i class="fas fa-bell"></i></div>
+                                <div class="action-content">
+                                    <h3>SOS Alert</h3>
+                                    <p>Send emergency alert to contacts</p>
+                                </div>
+                                <div class="action-arrow"><i class="fas fa-arrow-right"></i></div>
+                            </div>
+                            <div class="quick-action-card" data-action="navigate">
+                                <div class="action-icon navigate"><i class="fas fa-route"></i></div>
+                                <div class="action-content">
+                                    <h3>Safe Navigation</h3>
+                                    <p>Find the safest route to destination</p>
+                                </div>
+                                <div class="action-arrow"><i class="fas fa-arrow-right"></i></div>
+                            </div>
+                            <div class="quick-action-card" data-action="share-location">
+                                <div class="action-icon share"><i class="fas fa-share-alt"></i></div>
+                                <div class="action-content">
+                                    <h3>Share Location</h3>
+                                    <p>Share live location with family</p>
+                                </div>
+                                <div class="action-arrow"><i class="fas fa-arrow-right"></i></div>
+                            </div>
+                            <div class="quick-action-card" data-action="call-police">
+                                <div class="action-icon police"><i class="fas fa-phone-alt"></i></div>
+                                <div class="action-content">
+                                    <h3>Call Police (100)</h3>
+                                    <p>Direct dial emergency services</p>
+                                </div>
+                                <div class="action-arrow"><i class="fas fa-arrow-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Alerts Ticker -->
+                    <div class="alerts-ticker-section">
+                        <div class="ticker-header">
+                            <h2 class="section-title-home"><i class="fas fa-rss"></i> Live Alerts</h2>
+                            <span class="ticker-badge"><span class="pulse-dot-mini"></span> Real-time</span>
+                        </div>
+                        <div class="alerts-ticker" id="alerts-ticker">
+                            <!-- Alerts will be injected here -->
+                            <div class="ticker-item">
+                                <span class="ticker-time">2 min ago</span>
+                                <span class="ticker-icon warning"><i class="fas fa-exclamation-circle"></i></span>
+                                <span class="ticker-text">Traffic advisory near Connaught Place</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Grid -->
+                    <div class="home-dashboard">
+                        <!-- Weather & Time Widget -->
+                        <div class="dashboard-card weather-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-cloud-sun"></i> Weather & Time</h3>
+                            </div>
+                            <div class="weather-content">
+                                <div class="weather-main">
+                                    <div class="weather-icon">
+                                        <i class="fas fa-sun" id="weather-icon"></i>
+                                    </div>
+                                    <div class="weather-temp" id="weather-temp">28°C</div>
+                                </div>
+                                <div class="weather-details">
+                                    <div class="weather-location"><i class="fas fa-map-marker-alt"></i> <span
+                                            id="weather-location">Delhi NCR</span></div>
+                                    <div class="weather-time" id="home-time">--:--</div>
+                                    <div class="weather-condition" id="weather-condition">Partly Cloudy</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Safety Stats Mini -->
+                        <div class="dashboard-card stats-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> Today's Stats</h3>
+                            </div>
+                            <div class="mini-stats">
+                                <div class="mini-stat">
+                                    <span class="mini-stat-value" id="home-incidents">12</span>
+                                    <span class="mini-stat-label">Incidents</span>
+                                </div>
+                                <div class="mini-stat">
+                                    <span class="mini-stat-value safe" id="home-resolved">8</span>
+                                    <span class="mini-stat-label">Resolved</span>
+                                </div>
+                                <div class="mini-stat">
+                                    <span class="mini-stat-value warning" id="home-pending">4</span>
+                                    <span class="mini-stat-label">Pending</span>
+                                </div>
+                            </div>
+                            <div class="stats-chart-mini" id="mini-chart-container">
+                                <canvas id="homeSparkline" height="60"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Quick Contacts -->
+                        <div class="dashboard-card contacts-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-users"></i> Emergency Contacts</h3>
+                                <button class="card-action-btn"
+                                    onclick="document.querySelector('[data-view=help-view]').click()">View All</button>
+                            </div>
+                            <div class="quick-contacts" id="home-contacts">
+                                <div class="contact-quick" onclick="simulateCall('100')">
+                                    <div class="contact-avatar police"><i class="fas fa-building"></i></div>
+                                    <span>Police</span>
+                                </div>
+                                <div class="contact-quick" onclick="simulateCall('1091')">
+                                    <div class="contact-avatar women"><i class="fas fa-female"></i></div>
+                                    <span>Women</span>
+                                </div>
+                                <div class="contact-quick" onclick="simulateCall('102')">
+                                    <div class="contact-avatar ambulance"><i class="fas fa-ambulance"></i></div>
+                                    <span>Ambulance</span>
+                                </div>
+                                <div class="contact-quick" onclick="simulateCall('101')">
+                                    <div class="contact-avatar fire"><i class="fas fa-fire-extinguisher"></i></div>
+                                    <span>Fire</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent News Preview -->
+                        <div class="dashboard-card news-preview-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-newspaper"></i> Latest News</h3>
+                                <button class="card-action-btn"
+                                    onclick="document.querySelector('[data-view=news-view]').click()">See All</button>
+                            </div>
+                            <div class="news-preview-list" id="home-news-preview">
+                                <div class="news-preview-item">
+                                    <div class="news-preview-badge">CITY</div>
+                                    <div class="news-preview-text">Loading latest news...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Highlights -->
+                    <div class="features-section">
+                        <h2 class="section-title-home"><i class="fas fa-star"></i> App Features</h2>
+                        <div class="features-grid">
+                            <div class="feature-card" onclick="document.querySelector('[data-view=map-view]').click()">
+                                <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+                                <h4>Smart Navigation</h4>
+                                <p>AI-powered route finding avoiding crime zones</p>
+                            </div>
+                            <div class="feature-card"
+                                onclick="document.querySelector('[data-view=analysis-view]').click()">
+                                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                                <h4>AI Analysis</h4>
+                                <p>Real-time crime pattern detection</p>
+                            </div>
+                            <div class="feature-card" onclick="document.querySelector('[data-view=help-view]').click()">
+                                <div class="feature-icon"><i class="fas fa-satellite-dish"></i></div>
+                                <h4>Live Tracking</h4>
+                                <p>Share location with emergency contacts</p>
+                            </div>
+                            <div class="feature-card" onclick="document.querySelector('[data-view=news-view]').click()">
+                                <div class="feature-icon"><i class="fas fa-rss-square"></i></div>
+                                <h4>Live Updates</h4>
+                                <p>Real-time news and safety alerts</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 1. NEWS VIEW -->
+                <section id="news-view" class="view">
+                    <div class="section-header">
+                        <h2>Safety News</h2>
+                        <p>Latest crime and city updates for your safety.</p>
+                    </div>
+                    <div id="news-grid" class="news-grid">
+                        <!-- News cards injected here -->
+                        <div class="news-loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading latest news...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. NAVIGATION VIEW -->
+                <section id="map-view" class="view">
+                    <div class="nav-view" style="height: 100%; position: relative;">
+                        <div id="map"></div>
+                        <div class="map-overlay">
+                            <h4>Route Planning</h4>
+                            <div class="input-group" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                                <input type="text" id="start-location" class="input-field"
+                                    placeholder="Starting point..." value="Galgotias University" style="flex: 1;">
+                                <button id="locate-me-btn" class="secondary-btn" style="padding: 0 1rem;"
+                                    title="My Location">
+                                    <i class="fas fa-location-arrow"></i>
+                                </button>
+                            </div>
+                            <div class="input-group" style="margin-top: 0.5rem;">
+                                <input type="text" id="end-location" class="input-field" placeholder="Destination...">
+                            </div>
+                            <button id="find-route" class="primary-btn"
+                                style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+                                <i class="fas fa-search-location"></i> Find Safest Route
+                            </button>
+                            <div class="map-stats" style="margin-top: 1rem; font-size: 0.8rem; color: var(--gray-600);">
+                                <div id="traffic-info"><i class="fas fa-car"></i> Live traffic data enabled</div>
+                                <div id="construction-info"><i class="fas fa-tools"></i> Construction work identified
+                                </div>
+                                <div
+                                    style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--gray-200);">
+                                    <i class="fas fa-crosshairs"></i> GPS: <span id="location-accuracy"
+                                        style="font-weight: 600; color: var(--saffron);">Locating...</span>
+                                    <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 0.25rem;">Target:
+                                        ±5m precision</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. HISTORY VIEW -->
+                <section id="history-view" class="view">
+                    <div class="section-header">
+                        <h2>Travel History</h2>
+                        <p>Your recent trips and visited locations.</p>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <!-- History items injected here -->
+                        <div class="history-empty" style="padding: 2rem; text-align: center; color: var(--gray-500);">
+                            <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>No recent trips found.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. SAFETY/HELP VIEW -->
+                <section id="help-view" class="view">
+                    <div class="section-header">
+                        <h2>Emergency Support</h2>
+                        <p>Manage contacts, live tracking, and get instant help.</p>
+                    </div>
+                    <div class="help-grid">
+                        <div class="contact-section">
+                            <div class="sidebar-section">
+                                <h3 class="section-title"><i class="fas fa-users"></i> Emergency Contacts</h3>
+                                <div id="contact-list" style="margin-top: 1rem;">
+                                    <!-- Contacts injected here -->
+                                </div>
+                                <button id="add-contact-btn" class="secondary-btn"
+                                    style="width: 100%; margin-top: 1rem;">
+                                    <i class="fas fa-plus"></i> Add New Contact
+                                </button>
+                            </div>
+                        </div>
+                        <div class="sos-section">
+                            <div class="sidebar-section">
+                                <h3 class="section-title"><i class="fas fa-phone-alt"></i> Quick Dial</h3>
+                                <div class="emergency-buttons"
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                                    <button onclick="simulateCall('100')" class="emergency-btn police-btn"
+                                        style="padding: 1rem;">
+                                        <i class="fas fa-building"></i> Police (100)
+                                    </button>
+                                    <button onclick="simulateCall('1091')" class="emergency-btn women-btn"
+                                        style="padding: 1rem;">
+                                        <i class="fas fa-female"></i> Women (1091)
+                                    </button>
+                                </div>
+                                <button id="sos-btn" class="sos-button">
+                                    <i class="fas fa-bell"></i> SEND SOS ALERT
+                                </button>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--gray-500); margin-top: 1rem; text-align: center;">
+                                    Clicking SOS will send your live location to all emergency contacts.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Location Tracking Section -->
+                    <div class="tracking-section" style="margin-top: 2rem;">
+                        <div class="sidebar-section">
+                            <h3 class="section-title"><i class="fas fa-broadcast-tower"></i> Live Location Tracking</h3>
+
+                            <!-- Tracking Control Panel -->
+                            <div class="tracking-panel">
+                                <div class="tracking-status-row">
+                                    <div class="tracking-status" id="tracking-status">
+                                        <span class="status-dot inactive"></span>
+                                        <span class="status-text">Tracking Inactive</span>
+                                    </div>
+                                    <div class="battery-optimization">
+                                        <label for="battery-mode"><i class="fas fa-battery-half"></i></label>
+                                        <select id="battery-mode" class="battery-select">
+                                            <option value="high">High Accuracy (5s)</option>
+                                            <option value="balanced" selected>Balanced (15s)</option>
+                                            <option value="saver">Battery Saver (60s)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="tracking-controls" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                    <button id="start-tracking-btn" class="primary-btn" style="flex: 1;">
+                                        <i class="fas fa-play"></i> Start Tracking
+                                    </button>
+                                    <button id="stop-tracking-btn" class="secondary-btn" style="flex: 1;" disabled>
+                                        <i class="fas fa-stop"></i> Stop Tracking
+                                    </button>
+                                </div>
+
+                                <div class="emergency-sharing-toggle"
+                                    style="margin-top: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.05); border-radius: var(--radius-md); border: 1px dashed var(--risky);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong style="color: var(--risky);"><i
+                                                    class="fas fa-exclamation-triangle"></i> Emergency Sharing</strong>
+                                            <p style="font-size: 0.75rem; color: var(--gray-500); margin-top: 0.25rem;">
+                                                Continuously share location with all contacts</p>
+                                        </div>
+                                        <button id="emergency-share-btn" class="emergency-btn"
+                                            style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                            <i class="fas fa-share-alt"></i> Start
+                                        </button>
+                                    </div>
+                                    <div id="sharing-status" class="sharing-status"
+                                        style="display: none; margin-top: 0.75rem;">
+                                        <div class="sharing-active-indicator">
+                                            <span class="pulse-dot"></span>
+                                            <span>Sharing with <strong id="sharing-contacts-count">0</strong>
+                                                contacts</span>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">Last update: <span
+                                                id="last-share-time">--</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location History Timeline -->
+                            <div class="location-history" style="margin-top: 1.5rem;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                    <h4 style="font-size: 0.9rem; color: var(--gray-700);"><i
+                                            class="fas fa-history"></i> Location History</h4>
+                                    <button id="clear-history-btn" class="text-btn"
+                                        style="font-size: 0.75rem; color: var(--gray-500);">
+                                        <i class="fas fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                                <div id="location-timeline" class="location-timeline">
+                                    <div class="timeline-empty"
+                                        style="text-align: center; padding: 1.5rem; color: var(--gray-400);">
+                                        <i class="fas fa-map-marker-alt"
+                                            style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                                        <p>No location history yet</p>
+                                        <p style="font-size: 0.75rem;">Start tracking to record locations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. ANALYSIS VIEW -->
+                <section id="analysis-view" class="view">
+                    <div class="section-header">
+                        <h2>Crime Analysis</h2>
+                        <p>Insights into high-risk areas and crime trends.</p>
+                    </div>
+
+                    <!-- Live Status Bar -->
+                    <div class="live-status-bar"
+                        style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); padding: 1rem 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem; color: white;">
+                        <div class="live-clock" style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-clock" style="font-size: 1.2rem;"></i>
+                            <div>
+                                <div style="font-size: 0.75rem; opacity: 0.8;">Live Time</div>
+                                <div id="live-clock-display" style="font-size: 1.1rem; font-weight: 600;">--:--:--</div>
+                            </div>
+                        </div>
+                        <div class="ai-status" style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div class="pulse-indicator"
+                                style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite;">
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; opacity: 0.8;">AI Analysis</div>
+                                <div style="font-size: 0.9rem;">Next update in <span id="ai-countdown"
+                                        style="font-weight: 600;">45s</span></div>
+                            </div>
+                        </div>
+                        <div class="data-freshness" style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-database" style="font-size: 1.2rem;"></i>
+                            <div>
+                                <div style="font-size: 0.75rem; opacity: 0.8;">Data Status</div>
+                                <div id="data-freshness" style="font-size: 0.9rem; font-weight: 600;">🟢 Live</div>
+                            </div>
+                        </div>
+                        <button id="refresh-data-btn"
+                            style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;">
+                            <i class="fas fa-sync-alt"></i> Refresh Now
+                        </button>
+                    </div>
+
+                    <!-- Extended Stats Grid -->
+                    <div class="analysis-stats"
+                        style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;">
+                        <div class="stat-card">
+                            <h4>Total Incidents</h4>
+                            <span id="stat-total-crimes" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>High Risk Zones</h4>
+                            <span id="stat-high-risk" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Most Frequent</h4>
+                            <span id="stat-most-frequent" class="stat-value">-</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Last 24 Hours</h4>
+                            <span id="stat-last-24h" class="stat-value" style="color: #ef4444;">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Safe Zones</h4>
+                            <span id="stat-safe-zones" class="stat-value" style="color: #10b981;">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Avg Severity</h4>
+                            <span id="stat-avg-severity" class="stat-value" style="color: #f59e0b;">0.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="charts-grid"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+                        <div class="chart-container"
+                            style="background: white; padding: 1rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-200);">
+                            <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Safety Trend (7 Days)</h4>
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                        <div class="chart-container"
+                            style="background: white; padding: 1rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-200);">
+                            <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Incident Distribution</h4>
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Controls Section -->
+                    <div class="analysis-controls"
+                        style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; padding: 1rem; background: var(--gray-50); border-radius: var(--radius-lg); align-items: center;">
+                        <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 500; color: var(--gray-600); font-size: 0.85rem;"><i
+                                    class="fas fa-filter"></i> Filter by Type:</label>
+                            <select id="filter-crime-type"
+                                style="padding: 0.5rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white; cursor: pointer;">
+                                <option value="all">All Types</option>
+                                <option value="theft">Theft</option>
+                                <option value="robbery">Robbery</option>
+                                <option value="assault">Assault</option>
+                                <option value="harassment">Harassment</option>
+                                <option value="burglary">Burglary</option>
+                                <option value="vehicle_theft">Vehicle Theft</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 500; color: var(--gray-600); font-size: 0.85rem;"><i
+                                    class="fas fa-exclamation-triangle"></i> Severity:</label>
+                            <select id="filter-severity"
+                                style="padding: 0.5rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white; cursor: pointer;">
+                                <option value="all">All Levels</option>
+                                <option value="high">High (4-5)</option>
+                                <option value="medium">Medium (3)</option>
+                                <option value="low">Low (1-2)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 500; color: var(--gray-600); font-size: 0.85rem;"><i
+                                    class="fas fa-clock"></i> Time Range:</label>
+                            <select id="filter-time-range"
+                                style="padding: 0.5rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white; cursor: pointer;">
+                                <option value="all">All Time</option>
+                                <option value="1h">Last 1 Hour</option>
+                                <option value="6h">Last 6 Hours</option>
+                                <option value="24h">Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label style="font-weight: 500; color: var(--gray-600); font-size: 0.85rem;"><i
+                                    class="fas fa-sort"></i> Sort:</label>
+                            <select id="sort-order"
+                                style="padding: 0.5rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white; cursor: pointer;">
+                                <option value="time-desc">Newest First</option>
+                                <option value="time-asc">Oldest First</option>
+                                <option value="severity-desc">Severity (High to Low)</option>
+                                <option value="severity-asc">Severity (Low to High)</option>
+                            </select>
+                        </div>
+                        <div style="margin-left: auto; display: flex; gap: 0.5rem;">
+                            <button id="export-csv-btn"
+                                style="padding: 0.5rem 1rem; background: var(--safe); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
+                                <i class="fas fa-download"></i> Export CSV
+                            </button>
+                            <button id="clear-filters-btn"
+                                style="padding: 0.5rem 1rem; background: var(--gray-200); color: var(--gray-700); border: none; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table Section with Results Count -->
+                    <div class="analysis-table-container" style="margin-top: 1.5rem;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="margin: 0;">Recent Reports Log</h3>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span id="results-count" style="font-size: 0.85rem; color: var(--gray-500);">Showing 0
+                                    results</span>
+                                <div class="auto-refresh-toggle"
+                                    style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <label style="font-size: 0.85rem; color: var(--gray-600);">Auto-refresh</label>
+                                    <label class="toggle-switch"
+                                        style="position: relative; display: inline-block; width: 40px; height: 22px;">
+                                        <input type="checkbox" id="auto-refresh-toggle" checked
+                                            style="opacity: 0; width: 0; height: 0;">
+                                        <span class="toggle-slider"
+                                            style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 22px;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="analysis-table">
+                            <thead>
+                                <tr>
+                                    <th style="cursor: pointer;" onclick="sortTable('type')">Type <i
+                                            class="fas fa-sort"></i></th>
+                                    <th style="cursor: pointer;" onclick="sortTable('area')">Area <i
+                                            class="fas fa-sort"></i></th>
+                                    <th style="cursor: pointer;" onclick="sortTable('severity')">Severity <i
+                                            class="fas fa-sort"></i></th>
+                                    <th style="cursor: pointer;" onclick="sortTable('time')">Time <i
+                                            class="fas fa-sort"></i></th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analysis-table-body">
+                                <!-- Data injected here -->
+                            </tbody>
+                        </table>
+                        <!-- Pagination -->
+                        <div id="table-pagination"
+                            style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem;">
+                            <!-- Pagination buttons injected here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="contact-modal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <h3>Add Emergency Contact</h3>
+            <div class="input-group">
+                <input type="text" id="contact-name" placeholder="Name (e.g. Papa)">
+            </div>
+            <div class="input-group">
+                <input type="text" id="contact-phone" placeholder="Phone Number">
+            </div>
+            <div class="modal-actions">
+                <button id="cancel-contact" class="secondary-btn">Cancel</button>
+                <button id="save-contact" class="primary-btn">Save Contact</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data/crimes.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

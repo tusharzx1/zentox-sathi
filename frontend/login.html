@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ZENTOX-SATHI - Login to access crime-aware navigation">
+    <title>ZENTOX-SATHI | Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Left Panel - Branding -->
+        <div class="auth-branding">
+            <div class="branding-content">
+                <div class="brand-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>ZENTOX-SATHI</span>
+                </div>
+                <h1>Navigate Safely Across India</h1>
+                <p>ZENTOX-SATHI - AI-powered crime-aware navigation for safer journeys</p>
+
+                <div class="features-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Real-time crime data analysis</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Coverage across major Indian cities</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Time-based safety recommendations</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Multiple route alternatives</span>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Cities in India</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">90%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            <div class="branding-footer">
+                <p>© 2026 ZENTOX-SATHI BY ZENTOXDEV. All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- Right Panel - Auth Forms -->
+        <div class="auth-forms">
+            <div class="forms-wrapper">
+                <!-- Login Form -->
+                <div class="form-container" id="loginForm">
+                    <div class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to continue to ZENTOX-SATHI</p>
+                    </div>
+
+                    <form id="loginFormElement" onsubmit="handleLogin(event)">
+                        <div class="input-group">
+                            <label for="loginEmail">Email Address</label>
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            <span>Sign In</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <div class="social-buttons">
+                        <button class="btn-social" onclick="socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button class="btn-social" onclick="socialLogin('phone')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Phone</span>
+                        </button>
+                    </div>
+
+                    <p class="form-footer">
+                        Don't have an account?
+                        <a href="#" onclick="showSignup()">Create Account</a>
+                    </p>
+                </div>
+
+                <!-- Signup Form -->
+                <div class="form-container hidden" id="signupForm">
+                    <div class="form-header">
+                        <h2>Create Account</h2>
+                        <p>Join ZENTOX-SATHI for safer travels</p>
+                    </div>
+
+                    <form id="signupFormElement" onsubmit="handleSignup(event)">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="firstName">First Name</label>
+                                <div class="input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="firstName" placeholder="First name" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="lastName">Last Name</label>
+                                <div class="input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="lastName" placeholder="Last name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signupEmail">Email Address</label>
+                            <div class="input-field">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signupPhone">Phone Number</label>
+                            <div class="input-field">
+                                <i class="fas fa-phone"></i>
+                                <span class="country-code">+91</span>
+                                <input type="tel" id="signupPhone" placeholder="Enter phone number" required
+                                    pattern="[0-9]{10}">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signupCity">City</label>
+                            <div class="input-field">
+                                <i class="fas fa-city"></i>
+                                <select id="signupCity" required>
+                                    <option value="">Select your city</option>
+                                    <option value="mumbai">Mumbai</option>
+                                    <option value="delhi">Delhi NCR</option>
+                                    <option value="bangalore">Bangalore</option>
+                                    <option value="hyderabad">Hyderabad</option>
+                                    <option value="chennai">Chennai</option>
+                                    <option value="kolkata">Kolkata</option>
+                                    <option value="pune">Pune</option>
+                                    <option value="ahmedabad">Ahmedabad</option>
+                                    <option value="jaipur">Jaipur</option>
+                                    <option value="lucknow">Lucknow</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="signupPassword">Password</label>
+                            <div class="input-field">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="signupPassword" placeholder="Create password" required
+                                    minlength="8">
+                                <button type="button" class="toggle-password"
+                                    onclick="togglePassword('signupPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength" id="passwordStrength"></div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            <span>Create Account</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <p class="form-footer">
+                        Already have an account?
+                        <a href="#" onclick="showLogin()">Sign In</a>
+                    </p>
+                </div>
+
+                <!-- Phone OTP Form -->
+                <div class="form-container hidden" id="otpForm">
+                    <div class="form-header">
+                        <button class="btn-back" onclick="showLogin()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h2>Verify Phone</h2>
+                        <p>Enter the OTP sent to your phone</p>
+                    </div>
+
+                    <form id="otpFormElement" onsubmit="handleOTP(event)">
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 1)">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 2)">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 3)">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 4)">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 5)">
+                            <input type="text" maxlength="1" class="otp-input" oninput="moveToNext(this, 6)">
+                        </div>
+
+                        <p class="resend-text">
+                            Didn't receive code?
+                            <a href="#" onclick="resendOTP()">Resend OTP</a>
+                            <span id="otpTimer"></span>
+                        </p>
+
+                        <button type="submit" class="btn-primary">
+                            <span>Verify & Continue</span>
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>
